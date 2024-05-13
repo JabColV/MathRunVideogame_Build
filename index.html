@@ -10,8 +10,6 @@
     <!-- Enlaza a la hoja de estilos -->
     <link rel="stylesheet" href="TemplateData/style.css">
   </head>
-
-  <!-- Esta sección contiene el contenido visible de la página -->
   <body>
     <!-- Contenedor principal para el juego Unity WebGL. -->
     <div id="unity-container" class="unity-desktop">
@@ -33,12 +31,6 @@
       var progressBarFull = document.querySelector("#unity-progress-bar-full");
       var warningBanner = document.querySelector("#unity-warning");
 
-      // Shows a temporary message banner/ribbon for a few seconds, or
-      // a permanent error message on top of the canvas if type=='error'.
-      // If type=='warning', a yellow highlight color is used.
-      // Modify or remove this function to customize the visually presented
-      // way that non-critical warnings and error messages are presented to the
-      // user.
       function unityShowBanner(msg, type) {
         function updateBannerVisibility() {
           warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
@@ -58,24 +50,17 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/BuildMathRun.loader.js";
+      var loaderUrl = buildUrl + "/Build_MathRun.loader.js";
       var config = {
-        dataUrl: buildUrl + "/BuildMathRun.data",
-        frameworkUrl: buildUrl + "/BuildMathRun.framework.js",
-        codeUrl: buildUrl + "/BuildMathRun.wasm",
+        dataUrl: buildUrl + "/Build_MathRun.data",
+        frameworkUrl: buildUrl + "/Build_MathRun.framework.js",
+        codeUrl: buildUrl + "/Build_MathRun.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "MathRun",
         productVersion: "0.1",
         showBanner: unityShowBanner,
       };
-
-      // By default, Unity keeps WebGL canvas render target size matched with
-      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
-      // Set this to false if you want to decouple this synchronization from
-      // happening inside the engine, and you would instead like to size up
-      // the canvas DOM size and WebGL render target sizes yourself.
-      // config.matchWebGLToCanvasSize = false;
 
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         // Mobile device style: fill the whole browser client area with the game canvas:
@@ -86,12 +71,6 @@
         document.getElementsByTagName('head')[0].appendChild(meta);
         container.className = "unity-mobile";
         canvas.className = "unity-mobile";
-
-        // To lower canvas resolution on mobile devices to gain some
-        // performance, uncomment the following line:
-        // config.devicePixelRatio = 1;
-
-
       } else {
         // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
         canvas.style.width = "100%";
@@ -145,15 +124,28 @@
         createUnityInstance(canvas, config, (progress) => {
           progressBarFull.style.width = 100 * progress + "%";
               }).then((unityInstance) => {
+                // This is needed to make the Unity Firebase WebGL Library work properly
+                this.unityInstance = unityInstance;
                 loadingBar.style.display = "none";
               }).catch((message) => {
                 alert(message);
               });
             };
-
       document.body.appendChild(script);
-
     </script>
-    <script type="module"  src="connect-firebase.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script type="module">
+      const firebaseConfig = {
+        apiKey: "AIzaSyCJVcZS-u7QQ4uSawiivr2okBW8JqkQBxc",
+        authDomain: "mathrunvideogame.firebaseapp.com",
+        projectId: "mathrunvideogame",
+        storageBucket: "mathrunvideogame.appspot.com",
+        messagingSenderId: "1030963993155",
+        appId: "1:1030963993155:web:0379edf3bd2bb63365d2f6"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
   </body>
 </html>
