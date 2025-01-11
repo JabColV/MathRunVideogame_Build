@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "mathrunvideogame"
-  }
+    "default": "mathrunvideogame",
+    "web_unity_VG": "web-videogame-unity"
+  },
+  "targets": {},
+  "etags": {}
 }
