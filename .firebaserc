@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "webvideogameunity",
+    "default": "unity-videogame-3",
     "web_unity_VG": "web-videogame-unity"
   },
   "targets": {},
